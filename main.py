@@ -39,22 +39,21 @@ def generate_schema(model_file_path):
                 data_type_mapping = "UNKNOWN_DATA_TYPE"
                 if data_type in data_type_mappings:
                     data_type_mapping = data_type_mappings[data_type]
-                table_column_mappings += column_name + ": { \n"
-                table_column_mappings += " type: " + data_type_mapping
+                table_column_mappings += " \t " + column_name + ": { \n"
+                table_column_mappings += "  \t\t type: " + data_type_mapping
                 if line.find("NOT NULL") != -1:
                     print(column_name, "-", "Not null")
-                    table_column_mappings += ", \n allowNull : false" + "\n"
+                    table_column_mappings += ", \n  \t\t allowNull : false" + "\n"
                 else:
                     table_column_mappings += "\n"
                     print(column_name, "-", "Null")
-                table_column_mappings += " }, \n"
+                table_column_mappings += "  \t }, \n"
             else:
                 print("last column")
 
     model_file_contents.close()
 
-    schema_content = "const " + model_name + " = sequelize.define('" + model_name + "', {" + "\n" + table_column_mappings + "\n" + "}, { " + "\n" + "tableName: '" + table_name + "', \n" + "timestamps: " + "false" + ", \n" + "});"
-    print("schema_content", schema_content)
+    schema_content = "const " + model_name + " = sequelize.define('" + model_name + "', {" + "\n" + table_column_mappings + "\n" + "}, { " + "\n \t" + "tableName: '" + table_name + "', \n \t" + "timestamps: " + "false" + ", \n" + "});"
 
     schema_file_path = schemas_path + "/" + schema_name + ".js"
     f = open(schema_file_path, "w")
